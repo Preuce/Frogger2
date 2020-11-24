@@ -3,6 +3,7 @@ package gameCommons;
 import java.awt.Color;
 import java.util.Random;
 
+import environment.Environment;
 import graphicalElements.Element;
 import graphicalElements.IFroggerGraphics;
 
@@ -75,7 +76,7 @@ public class Game {
 	 * 
 	 * @return true si le partie est perdue
 	 */
-	public boolean testLose() {
+	public boolean testLose() { // apparemment un problème ici
 		if(!environment.isSafe(this.frog.getPosition())){
 			return true;
 		}
@@ -103,7 +104,7 @@ public class Game {
 		graphic.clear();
 		environment.update();
 		this.graphic.add(new Element(frog.getPosition(), Color.GREEN));
-		testLose();
+		testLose(); //si y a un problème avec testlose c'est plutôt logique
 		testWin();
 	}
 

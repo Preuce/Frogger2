@@ -54,6 +54,4 @@ public class Frog implements IFrog {
 			this.position = new Case(this.position.absc+1, this.position.ord);
 		}
 	}
-
-
 }

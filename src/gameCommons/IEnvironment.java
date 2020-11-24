@@ -1,5 +1,6 @@
 package gameCommons;
 
+import environment.Environment;
 import util.Case;
 
 public interface IEnvironment {

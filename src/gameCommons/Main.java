@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import frog.Frog;
-import givenEnvironment.GivenEnvironment;
 import graphicalElements.FroggerGraphic;
 import graphicalElements.IFroggerGraphics;
 
@@ -34,13 +33,13 @@ public class Main {
 		game.setEnvironment(env);
 				
 		//Boucle principale : l'environnement s'actualise tous les tempo milisecondes
-		Timer timer = new Timer(tempo, new ActionListener() ) { //wtf are you ?
+		Timer timer = new Timer(tempo, new ActionListener() { //wtf are you ?
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				game.update();
-				graphic.repaint();
+				graphic.repaint(); //apparemment erreur ici
 			}
-		};
+		});
 		timer.setInitialDelay(0);
 		timer.start();
 	}
