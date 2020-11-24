@@ -30,17 +30,17 @@ public class Main {
 		game.setFrog(frog);
 		graphic.setFrog(frog);
 		//Creation et liaison de l'environnement
-		IEnvironment env = new GivenEnvironment(game);
+		IEnvironment env = new environment.Environment(game);
 		game.setEnvironment(env);
 				
-		//Boucle principale : l'environnement s'acturalise tous les tempo milisecondes
-		Timer timer = new Timer(tempo, new ActionListener() {
+		//Boucle principale : l'environnement s'actualise tous les tempo milisecondes
+		Timer timer = new Timer(tempo, new ActionListener() ) { //wtf are you ?
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				game.update();
 				graphic.repaint();
 			}
-		});
+		};
 		timer.setInitialDelay(0);
 		timer.start();
 	}
