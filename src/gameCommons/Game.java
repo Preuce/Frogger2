@@ -3,9 +3,9 @@ package gameCommons;
 import java.awt.Color;
 import java.util.Random;
 
-import environment.Environment;
 import graphicalElements.Element;
 import graphicalElements.IFroggerGraphics;
+import util.Statut;
 
 public class Game {
 
@@ -16,6 +16,9 @@ public class Game {
 	public final int height;
 	public final int minSpeedInTimerLoops;
 	public final double defaultDensity;
+	public int best;
+	public boolean gameInf;
+	public Statut etat;
 
 	// Lien aux objets utilis�s
 	private IEnvironment environment;
@@ -42,6 +45,9 @@ public class Game {
 		this.height = height;
 		this.minSpeedInTimerLoops = minSpeedInTimerLoop;
 		this.defaultDensity = defaultDensity;
+		this.best = 0;
+		this.gameInf = false;
+		this.etat = Statut.playing;
 	}
 
 	/**
@@ -76,11 +82,27 @@ public class Game {
 	 * 
 	 * @return true si le partie est perdue
 	 */
-	public boolean testLose() { // apparemment un problème ici
-		if(!environment.isSafe(this.frog.getPosition())){
-			return true;
+	public void testLose() {
+		if(!environment.isSafe(this.frog.getPosition()) && this.etat == Statut.playing) {
+			etat = Statut.lost;
+			if (gameInf) {
+				if (environment.getScore() > best) {
+					best = environment.getScore();
+				}
+				this.graphic.endGameScreen("Votre score : " + environment.getScore() + " Record : " + best, "Infini");
+			}else{
+				this.graphic.endGameScreen("Vous avez perdu", "Normal");
+			}
 		}
-		return false;
+	}
+
+	public void changeMode(){
+		gameInf = !gameInf;
+		if(gameInf) {
+			this.graphic.afficheBonMode("Infini");
+		}else{
+			this.graphic.afficheBonMode("Normal");
+		}
 	}
 
 	/**
@@ -89,11 +111,24 @@ public class Game {
 	 * 
 	 * @return true si la partie est gagn�e
 	 */
-	public boolean testWin() {
-		if(this.frog.getPosition().ord == this.height){
-			return true;
+	public void testWin() {
+		if(environment.isWinningPosition(this.frog.getPosition()) && this.etat == Statut.playing ){
+			etat = Statut.won;
+			this.graphic.endGameScreen("Vous avez gagne en " + (float) this.environment.getTick()/10 + " secondes", "Normal");
 		}
-		return false;
+	}
+
+	public IEnvironment getEnvironment(){
+		return this.environment;
+	}
+
+	public void restartJeu(){
+		this.etat = Statut.playing;
+		this.environment.restartEnvironment();
+		this.frog.restartFrog();
+		this.graphic.restartScreen();
+		this.graphic.clear();
+		this.graphic.addScreen();
 	}
 
 	/**
@@ -104,8 +139,7 @@ public class Game {
 		graphic.clear();
 		environment.update();
 		this.graphic.add(new Element(frog.getPosition(), Color.GREEN));
-		testLose(); //si y a un problème avec testlose c'est plutôt logique
+		testLose();
 		testWin();
 	}
-
 }

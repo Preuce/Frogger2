@@ -4,6 +4,7 @@ import gameCommons.Game;
 import gameCommons.IFrog;
 import util.Case;
 import util.Direction;
+import util.Statut;
 
 public class Frog implements IFrog {
 	
@@ -14,7 +15,7 @@ public class Frog implements IFrog {
 	public Frog(Game game){
 		this.game = game;
 		this.direction = Direction.up;
-		this.position = new Case(game.width/2, 0);
+		this.position = new Case(game.width/2, 1);
 	}
 
 	/**
@@ -33,25 +34,54 @@ public class Frog implements IFrog {
 		return this.direction;
 	}
 
+	public Game getGame(){
+		return this.game;
+	}
+
 	/**
 	 * D�place la grenouille dans la direction donn�e et teste la fin de partie
 	 * @param key
 	 */
 	public void move(Direction key){
-		if(key == Direction.up){
-			this.position = new Case(this.position.absc, this.position.ord+1);
+		if (key == Direction.up && this.position.ord < game.height - 1 && !game.gameInf) {
+			this.position = new Case(this.position.absc, this.position.ord + 1);
 		}
 
-		if(key == Direction.down){
-			this.position = new Case(this.position.absc, this.position.ord-1);
+		if (key == Direction.down && this.position.ord != 0 && !game.gameInf) {
+			this.position = new Case(this.position.absc, this.position.ord - 1);
 		}
 
-		if(key == Direction.left){
-			this.position = new Case(this.position.absc-1, this.position.ord);
+		if(key == Direction.up && game.gameInf){
+			this.game.getEnvironment().bougeLaneDown();
 		}
 
-		if(key == Direction.right){
-			this.position = new Case(this.position.absc+1, this.position.ord);
+		if(key == Direction.down && game.gameInf){
+			this.game.getEnvironment().bougeLaneUp();
 		}
+
+		if (key == Direction.left && this.position.absc != 0) {
+			this.position = new Case(this.position.absc - 1, this.position.ord);
+		}
+
+		if (key == Direction.right && this.position.absc < game.width - 1) {
+			this.position = new Case(this.position.absc + 1, this.position.ord);
+		}
+	}
+
+	public void finDuJeu(){
+		if(this.game.etat != Statut.playing){
+			this.game.restartJeu();
+		}
+	}
+
+	public void changeMode(){
+		if(this.game.etat != Statut.playing){
+			this.game.changeMode();
+		}
+	}
+
+	public void restartFrog(){
+		this.position.absc = game.width/2;
+		this.position.ord = 1;
 	}
 }

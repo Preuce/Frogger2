@@ -18,7 +18,7 @@ public class Main {
 		int height = 20;
 		int tempo = 100;
 		int minSpeedInTimerLoops = 3;
-		double defaultDensity = 0.2;
+		double defaultDensity = 0.07;
 		
 		//Creation de l'interface graphique
 		IFroggerGraphics graphic = new FroggerGraphic(width, height);
@@ -33,11 +33,11 @@ public class Main {
 		game.setEnvironment(env);
 				
 		//Boucle principale : l'environnement s'actualise tous les tempo milisecondes
-		Timer timer = new Timer(tempo, new ActionListener() { //wtf are you ?
+		Timer timer = new Timer(tempo, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				game.update();
-				graphic.repaint(); //apparemment erreur ici
+				graphic.repaint();
 			}
 		});
 		timer.setInitialDelay(0);

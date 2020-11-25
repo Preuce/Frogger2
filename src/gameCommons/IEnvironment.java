@@ -1,7 +1,10 @@
 package gameCommons;
 
 import environment.Environment;
+import environment.Lane;
 import util.Case;
+
+import java.util.ArrayList;
 
 public interface IEnvironment {
 
@@ -28,4 +31,15 @@ public interface IEnvironment {
 	 */
 	public void update();
 
+	public void bougeLaneUp();
+
+	public void bougeLaneDown();
+
+	public int getScore();
+
+	public int getTick();
+
+	public int getSize();
+
+	public void restartEnvironment();
 }
